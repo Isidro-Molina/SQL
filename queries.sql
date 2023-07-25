@@ -122,4 +122,14 @@ HAVING roles_counter >= 5
 ORDER BY roles_counter DESC;
 
 
--- 
+-- Actrices
+SELECT movies.year, COUNT(DISTINCT movie_id) as num_movies
+FROM movies
+INNER JOIN roles ON roles.movie_id = movies.id
+WHERE movies.id NOT IN (
+  SELECT DISTINCT movie_id
+  FROM roles
+  INNER JOIN actors ON roles.actor_id = actors.id
+  WHERE actors.gender = 'M'
+)
+GROUP BY movies.year;
